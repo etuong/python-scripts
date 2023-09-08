@@ -1,3 +1,5 @@
+# Script to scrape a website to get the number of unique HTML elements
+
 from bs4 import BeautifulSoup
 import requests
 import sys
