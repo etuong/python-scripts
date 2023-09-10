@@ -1,4 +1,5 @@
 # Script to generate a random strong password
+
 import random
 import string
 

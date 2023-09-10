@@ -1,7 +1,7 @@
 # Simple script to practice regular expression
 # Here, we are checking if a credit card number is found
-import re
 
+import re
 
 string = """A string we are using to filter specific items.
 perhaps we would like to match credit card numbers
