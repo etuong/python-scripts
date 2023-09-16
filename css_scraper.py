@@ -11,6 +11,7 @@ cssutils.log.setLevel(logging.CRITICAL)
 sheets = set()
 hrefs = ["/","index.html"]
 elements = set()
+bucket = set()
 
 def scrape(site, path):
     # Make a GET request to fetch the raw HTML content
@@ -24,8 +25,9 @@ def scrape(site, path):
     for link in s.findAll("link"):
         if 'href' in  link.attrs:
             href = link.attrs['href']
-            href = "/" + href if not href.startswith("/") else href
-            sheets.add(site + href)
+            if href.endswith(".css"):
+                href = "/" + href if not href.startswith("/") else href
+                sheets.add(site + href)
             
     # Recurse to get all the anchors
     for i in s.find_all("a"):
@@ -39,18 +41,23 @@ def scrape(site, path):
 
 
 def parse():
-    bucket = set()
     for sheet in sheets:
-        style = cssutils.parseUrl(sheet)
-        for rule in style:
-            if rule.type == rule.STYLE_RULE:
-                for property in rule.style:
-                    bucket.add(property.name)
+        try:
+            style = cssutils.parseUrl(sheet)
+            recurse(style)
+        finally:
+            continue
 
     print(sorted(bucket))
     print(f'Number of Unique CSS Properties is {len(bucket)}')
 
-
+def recurse(style):
+    for rule in style:
+        if rule.type == rule.STYLE_RULE:
+            for property in rule.style:
+                bucket.add(property.name)
+        if rule.type == rule.MEDIA_RULE:
+            recurse(rule)
 
 if __name__ == "__main__":
     site = sys.argv[1]
