@@ -20,5 +20,5 @@
 1. Name your VCF files `contact{1..n}`.vcf
 1. Set up venv `py -m venv venv`
 1. Activate virtual environment `source ./venv/Scripts/activate`
-1. Install dependency `pip install xlwt`
+1. Install dependency `pip install xlwt xlrd`
 1. Run `py main.py`
